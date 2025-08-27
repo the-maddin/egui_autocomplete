@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [11.0.0] - 2025-08-26
+- Thanks to @yvind for the work on this release.
+
+### Breaking
+- Requires egui 0.32
+
+### Added
+- Added a width parameter to the autocomplete list. Defaults to all available space (f32::INFINITY)
+- Made so that the suggestions deselcts when going down from last and that the last is selected when going up from 
+unselected (makes it easier to select something far down in the list)
+### Fixed
+- Fixed index out of bounds panic when pressing down but no matches were found.
+
+[11.0.0]: https://github.com/JakeHandsome/egui_autocomplete/compare/10.2.0...11.0.0
+
 ## [10.2.0] - 2025-04-28
 ### Added
 - New api `multiple_words(bool)` which when set will provide completions when entering multiple space-delimited words 
