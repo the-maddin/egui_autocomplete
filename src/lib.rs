@@ -279,33 +279,43 @@ where
 
         // show the popup
         popup.show(|ui| {
-            egui::ScrollArea::vertical().show(ui, |ui| {
+            let mut show_popup_contents = |ui: &mut egui::Ui, i, output: &S, match_indices| {
+                let mut selected = if let Some(x) = state.selected_index {
+                    x == i
+                } else {
+                    false
+                };
+
+                let text = if highlight {
+                    highlight_matches(
+                        output.as_ref(),
+                        match_indices,
+                        ui.style().visuals.widgets.active.text_color(),
+                    )
+                } else {
+                    let mut job = LayoutJob::default();
+                    job.append(output.as_ref(), 0.0, egui::TextFormat::default());
+                    job
+                };
+                //  Update selected index based on hover
+                if ui.toggle_value(&mut selected, text).hovered() {
+                    state.selected_index = Some(i);
+                };
+            };
+
+            if max_suggestions == usize::MAX {
+                egui::ScrollArea::vertical().show(ui, |ui| {
+                    for (i, (output, _, match_indices)) in match_results.iter().enumerate() {
+                        show_popup_contents(ui, i, output, match_indices);
+                    }
+                });
+            } else {
                 for (i, (output, _, match_indices)) in
                     match_results.iter().take(max_suggestions).enumerate()
                 {
-                    let mut selected = if let Some(x) = state.selected_index {
-                        x == i
-                    } else {
-                        false
-                    };
-
-                    let text = if highlight {
-                        highlight_matches(
-                            output.as_ref(),
-                            match_indices,
-                            ui.style().visuals.widgets.active.text_color(),
-                        )
-                    } else {
-                        let mut job = LayoutJob::default();
-                        job.append(output.as_ref(), 0.0, egui::TextFormat::default());
-                        job
-                    };
-                    //  Update selected index based on hover
-                    if ui.toggle_value(&mut selected, text).hovered() {
-                        state.selected_index = Some(i);
-                    }
+                    show_popup_contents(ui, i, output, match_indices);
                 }
-            })
+            }
         });
 
         state.store(ui.ctx(), id);
