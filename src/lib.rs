@@ -83,7 +83,7 @@ where
     S: AsRef<str>,
 {
     /// This determines the number of options appear in the dropdown menu
-    /// 
+    ///
     /// Set to `usize::MAX` to enable scrolling instead.
     ///
     /// Defaults to `10`
