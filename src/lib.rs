@@ -37,7 +37,8 @@ pub struct AutoCompleteTextEdit<'a, T> {
     text_field: &'a mut String,
     /// Data to use as the search term
     search: T,
-    /// A limit that can be placed on the maximum number of autocomplete suggestions shown
+    /// A limit that can be placed on the maximum number of autocomplete suggestions shown (default `10`)
+    /// `usize::MAX` wraps suggestions in a ScrollArea::vertical() instead
     max_suggestions: usize,
     /// If true, highlights the matching indices in the dropdown
     highlight: bool,
@@ -82,6 +83,10 @@ where
     S: AsRef<str>,
 {
     /// This determines the number of options appear in the dropdown menu
+    /// 
+    /// Set to `usize::MAX` to enable scrolling instead.
+    ///
+    /// Defaults to `10`
     pub fn max_suggestions(mut self, max_suggestions: usize) -> Self {
         self.max_suggestions = max_suggestions;
         self
