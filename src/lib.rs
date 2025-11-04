@@ -279,31 +279,33 @@ where
 
         // show the popup
         popup.show(|ui| {
-            for (i, (output, _, match_indices)) in
-                match_results.iter().take(max_suggestions).enumerate()
-            {
-                let mut selected = if let Some(x) = state.selected_index {
-                    x == i
-                } else {
-                    false
-                };
+            egui::ScrollArea::vertical().show(ui, |ui| {
+                for (i, (output, _, match_indices)) in
+                    match_results.iter().take(max_suggestions).enumerate()
+                {
+                    let mut selected = if let Some(x) = state.selected_index {
+                        x == i
+                    } else {
+                        false
+                    };
 
-                let text = if highlight {
-                    highlight_matches(
-                        output.as_ref(),
-                        match_indices,
-                        ui.style().visuals.widgets.active.text_color(),
-                    )
-                } else {
-                    let mut job = LayoutJob::default();
-                    job.append(output.as_ref(), 0.0, egui::TextFormat::default());
-                    job
-                };
-                //  Update selected index based on hover
-                if ui.toggle_value(&mut selected, text).hovered() {
-                    state.selected_index = Some(i);
+                    let text = if highlight {
+                        highlight_matches(
+                            output.as_ref(),
+                            match_indices,
+                            ui.style().visuals.widgets.active.text_color(),
+                        )
+                    } else {
+                        let mut job = LayoutJob::default();
+                        job.append(output.as_ref(), 0.0, egui::TextFormat::default());
+                        job
+                    };
+                    //  Update selected index based on hover
+                    if ui.toggle_value(&mut selected, text).hovered() {
+                        state.selected_index = Some(i);
+                    }
                 }
-            }
+            })
         });
 
         state.store(ui.ctx(), id);
