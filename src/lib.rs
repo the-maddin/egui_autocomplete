@@ -310,6 +310,7 @@ where
 
             if max_suggestions == usize::MAX {
                 egui::ScrollArea::vertical().show(ui, |ui| {
+                    ui.set_min_height(100.);
                     for (i, (output, _, match_indices)) in match_results.iter().enumerate() {
                         show_popup_contents(ui, i, output, match_indices);
                     }
