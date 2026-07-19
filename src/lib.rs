@@ -177,7 +177,7 @@ where
 
         let completion_input = if multiple_words {
             if let Some(cursor_range) = text_edit_output.cursor_range {
-                let index = cursor_range.primary.index;
+                let index = cursor_range.primary.index.0;
                 // Get the word located at the current index
                 let mut start = index;
                 let mut end = index;
@@ -472,27 +472,27 @@ mod test {
         let layout = highlight_matches(&text, &match_indices, egui::Color32::RED);
         assert_eq!(6, layout.sections.len());
         let sec1 = layout.sections.first().unwrap();
-        assert_eq!(&text[sec1.byte_range.start..sec1.byte_range.end], "T");
+        assert_eq!(&text[sec1.byte_range.start.0..sec1.byte_range.end.0], "T");
         assert_ne!(sec1.format.color, egui::Color32::RED);
 
         let sec2 = layout.sections.get(1).unwrap();
-        assert_eq!(&text[sec2.byte_range.start..sec2.byte_range.end], "e");
+        assert_eq!(&text[sec2.byte_range.start.0..sec2.byte_range.end.0], "e");
         assert_eq!(sec2.format.color, egui::Color32::RED);
 
         let sec3 = layout.sections.get(2).unwrap();
-        assert_eq!(&text[sec3.byte_range.start..sec3.byte_range.end], "st1");
+        assert_eq!(&text[sec3.byte_range.start.0..sec3.byte_range.end.0], "st1");
         assert_ne!(sec3.format.color, egui::Color32::RED);
 
         let sec4 = layout.sections.get(3).unwrap();
-        assert_eq!(&text[sec4.byte_range.start..sec4.byte_range.end], "23");
+        assert_eq!(&text[sec4.byte_range.start.0..sec4.byte_range.end.0], "23");
         assert_eq!(sec4.format.color, egui::Color32::RED);
 
         let sec5 = layout.sections.get(4).unwrap();
-        assert_eq!(&text[sec5.byte_range.start..sec5.byte_range.end], "á");
+        assert_eq!(&text[sec5.byte_range.start.0..sec5.byte_range.end.0], "á");
         assert_ne!(sec5.format.color, egui::Color32::RED);
 
         let sec6 = layout.sections.get(5).unwrap();
-        assert_eq!(&text[sec6.byte_range.start..sec6.byte_range.end], "éíó");
+        assert_eq!(&text[sec6.byte_range.start.0..sec6.byte_range.end.0], "éíó");
         assert_eq!(sec6.format.color, egui::Color32::RED);
     }
 }
